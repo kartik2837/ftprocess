@@ -417,16 +417,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -492,7 +482,6 @@ export default function OrderSuccess() {
     ? new Date(orderDetails.orderDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
     : new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
-  const shippingAmount = 499;
   const gstAmount = orderDetails.total * 0.18;
 
   const steps = [
@@ -840,3 +829,9 @@ export default function OrderSuccess() {
     </div>
   );
 }
+
+
+
+
+
+
