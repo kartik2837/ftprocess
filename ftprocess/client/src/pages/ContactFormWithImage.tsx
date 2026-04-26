@@ -389,7 +389,7 @@ interface FormData {
 const ContactFormWithImage: React.FC<ContactFormProps> = ({
   title = "Get In Touch",
   subtitle = "We'd love to hear from you. Fill out the form below and our team will get back to you within 24 hours.",
-  imageSrc = "https://images.unsplash.com/photo-1581092918056-0c4c3acd3783?w=800&auto=format",
+  // imageSrc = "https://images.unsplash.com/photo-1581092918056-0c4c3acd3783?w=800&auto=format",
   imageAlt = "Industrial Pump",
   buttonText = "Send Message",
   onSubmit

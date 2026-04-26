@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         <ProductShowcase />
         <ContactFormWithImage />
         <CustomerReviews />
-        <FtProcess />
+        {/* <FtProcess /> */}
       </div>
     </div>
   );

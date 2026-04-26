@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import lobe from '../assets/lobe.jpg'
 import screw from '../assets/screw.jpg'
 import hygenic from '../assets/hygenic.jpg'
@@ -13,9 +14,16 @@ interface Product {
   description: string;
   rating: number;
   inStock: boolean;
+  specifications?: {
+    material?: string;
+    capacity?: string;
+    power?: string;
+    warranty?: string;
+  };
 }
 
 const ProductShowcase: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cart, setCart] = useState<Product[]>([]);
   const [showToast, setShowToast] = useState(false);
@@ -31,7 +39,13 @@ const ProductShowcase: React.FC = () => {
       category: "Centrifugal",
       description: "High-flow pump for industrial applications with 5000 GPM capacity and energy-efficient design.",
       rating: 4.8,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "Stainless Steel 316",
+        capacity: "5000 GPM",
+        power: "50 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 2,
@@ -41,7 +55,13 @@ const ProductShowcase: React.FC = () => {
       category: "Diaphragm",
       description: "Precision chemical dosing pump with ±1% accuracy and chemical-resistant PTFE diaphragm.",
       rating: 4.9,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "Cast Iron",
+        capacity: "2500 GPM",
+        power: "30 HP",
+        warranty: "3 years"
+      }
     },
     {
       id: 3,
@@ -51,7 +71,13 @@ const ProductShowcase: React.FC = () => {
       category: "High Pressure",
       description: "Heavy-duty multistage pump with 580 PSI capacity and stainless steel construction.",
       rating: 4.7,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "SS 304",
+        capacity: "3500 GPM",
+        power: "75 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 4,
@@ -61,7 +87,13 @@ const ProductShowcase: React.FC = () => {
       category: "Submersible",
       description: "Abrasion-resistant pump for depths up to 100m with 200 HP power rating.",
       rating: 4.6,
-      inStock: false
+      inStock: false,
+      specifications: {
+        material: "Cast Iron",
+        capacity: "1500 GPM",
+        power: "200 HP",
+        warranty: "1 year"
+      }
     },
     {
       id: 5,
@@ -71,7 +103,13 @@ const ProductShowcase: React.FC = () => {
       category: "Gear",
       description: "Positive displacement pump with 1000 PSI pressure and compact design.",
       rating: 4.5,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "Carbon Steel",
+        capacity: "1000 GPM",
+        power: "20 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 6,
@@ -81,7 +119,13 @@ const ProductShowcase: React.FC = () => {
       category: "Vacuum",
       description: "Industrial vacuum solution with 0.1 mbar ultimate vacuum and oil-free option.",
       rating: 4.8,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "Aluminum",
+        capacity: "500 CFM",
+        power: "15 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 7,
@@ -91,7 +135,13 @@ const ProductShowcase: React.FC = () => {
       category: "Magnetic",
       description: "Seal-less pump for hazardous chemicals with zero leakage guarantee.",
       rating: 4.9,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "PTFE Lined",
+        capacity: "800 GPM",
+        power: "40 HP",
+        warranty: "3 years"
+      }
     },
     {
       id: 8,
@@ -101,7 +151,13 @@ const ProductShowcase: React.FC = () => {
       category: "Peristaltic",
       description: "Gentle pump for shear-sensitive fluids with FDA compliant materials.",
       rating: 4.7,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "Stainless Steel",
+        capacity: "200 GPM",
+        power: "10 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 9,
@@ -111,7 +167,13 @@ const ProductShowcase: React.FC = () => {
       category: "Dosing",
       description: "Precision chemical injection pump with ±0.5% accuracy and adjustable flow.",
       rating: 4.6,
-      inStock: true
+      inStock: true,
+      specifications: {
+        material: "PVC",
+        capacity: "100 GPM",
+        power: "5 HP",
+        warranty: "2 years"
+      }
     },
     {
       id: 10,
@@ -121,11 +183,17 @@ const ProductShowcase: React.FC = () => {
       category: "Slurry",
       description: "Heavy-duty slurry handling pump with abrasion-resistant materials.",
       rating: 4.8,
-      inStock: false
+      inStock: false,
+      specifications: {
+        material: "Hard Iron",
+        capacity: "3000 GPM",
+        power: "100 HP",
+        warranty: "1 year"
+      }
     }
   ];
 
-  // Create 4 rows with the same 10 products
+  // Create 4 rows with the same products
   const rows: Product[][] = [
     products,  // Row 1: Only Inquiry button
     products,  // Row 2: Both buttons
@@ -144,6 +212,13 @@ const ProductShowcase: React.FC = () => {
     e.preventDefault();
     alert(`Inquiry submitted for ${showInquiry?.name}`);
     setShowInquiry(null);
+  };
+
+  // Navigate to product details page
+  const handleProductClick = (product: Product) => {
+    // Store selected product in localStorage for the details page
+    localStorage.setItem('selectedProduct', JSON.stringify(product));
+    navigate(`/product/${product.id}`);
   };
 
   const renderStars = (rating: number) => {
@@ -185,7 +260,7 @@ const ProductShowcase: React.FC = () => {
         animationDelay: `${index * 0.03}s`,
         opacity: 0
       }}
-      onClick={() => setSelectedProduct(product)}
+      onClick={() => handleProductClick(product)}
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden bg-gray-100">
@@ -225,7 +300,7 @@ const ProductShowcase: React.FC = () => {
         </p>
         
         <div className="text-lg font-bold text-orange-500 mb-3">
-          {product.price.toLocaleString()}
+          ${product.price.toLocaleString()}
         </div>
         
         {/* Action Buttons - Conditional based on row */}
@@ -370,7 +445,7 @@ const ProductShowcase: React.FC = () => {
             </span>
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto mt-4">
-            Discover our comprehensive range of industrial pumps. Use the arrow buttons to scroll horizontally through each row.
+            Discover our comprehensive range of industrial pumps. Click on any product to view detailed specifications.
           </p>
           <div className="mt-4 flex justify-center gap-3 flex-wrap">
             <span className="inline-flex items-center gap-1 text-sm bg-white px-3 py-1 rounded-full shadow-sm">
@@ -446,67 +521,7 @@ const ProductShowcase: React.FC = () => {
           rowNumber={4}
         />
 
-        {/* Product Detail Modal */}
-        {selectedProduct && (
-          <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={() => setSelectedProduct(null)}>
-            <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
-              <div className="relative">
-                <button onClick={() => setSelectedProduct(null)} className="absolute top-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 z-10">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-                <div className="grid md:grid-cols-2 gap-6 p-6">
-                  <div className="rounded-2xl overflow-hidden bg-gray-100">
-                    <img src={selectedProduct.image} alt={selectedProduct.name} className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">{selectedProduct.category}</span>
-                      {selectedProduct.inStock ? (
-                        <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">In Stock</span>
-                      ) : (
-                        <span className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">Out of Stock</span>
-                      )}
-                    </div>
-                    <h2 className="text-3xl font-bold text-gray-900 mb-2">{selectedProduct.name}</h2>
-                    <div className="mb-4">{renderStars(selectedProduct.rating)}</div>
-                    <div className="text-3xl font-bold text-orange-500 mb-4">${selectedProduct.price.toLocaleString()}</div>
-                    <p className="text-gray-600 mb-6 leading-relaxed">{selectedProduct.description}</p>
-                    
-                    <div className="border-t pt-4 mb-6">
-                      <h4 className="font-semibold mb-2">Key Specifications:</h4>
-                      <ul className="space-y-1 text-sm text-gray-600">
-                        <li className="flex items-center gap-2"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg> Premium quality construction</li>
-                        <li className="flex items-center gap-2"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg> Industry standard certified</li>
-                        <li className="flex items-center gap-2"><svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg> 2 years warranty</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() => { if (selectedProduct.inStock) addToCart(selectedProduct); setSelectedProduct(null); }}
-                        disabled={!selectedProduct.inStock}
-                        className={`flex-1 py-3 rounded-xl font-semibold transition flex items-center justify-center gap-2 ${
-                          selectedProduct.inStock ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        }`}
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                        Add to Cart
-                      </button>
-                      <button
-                        onClick={() => { setShowInquiry(selectedProduct); setSelectedProduct(null); }}
-                        className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 rounded-xl font-semibold transition"
-                      >
-                        Request Inquiry
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* NOTE: Modal is removed - Now using navigation to product details page */}
 
         {/* Inquiry Modal */}
         {showInquiry && (
